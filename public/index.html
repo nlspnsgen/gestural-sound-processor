@@ -4,16 +4,31 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Node Kinect2 Client</title>
-	<link rel="stylesheet" href="">
+    <link rel="stylesheet" href="">
+    <style>
+            body {
+              background-color: white;
+            }
+            #bodyCanvas {
+                display: block;
+
+                background-color: black;
+                margin-left: auto;
+                margin-top: 5rem;
+                margin-right: auto;
+            }
+    </style>
 </head>
 <body>
-	<canvas id="bodyCanvas" width="512" height="424"></canvas>
+	<canvas id="bodyCanvas" width="800" height="700"></canvas>
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io.connect('/');
 		var canvas = document.getElementById('bodyCanvas');
 		var ctx = canvas.getContext('2d');
-		var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
+        var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
+        var windowWidth = 800;
+        var windowHeight = 700;
 
 		// handstate circle size
 		var HANDSIZE = 20;
@@ -48,7 +63,7 @@
 			ctx.globalAlpha = 0.75;
 			ctx.beginPath();
 			ctx.fillStyle = handColor;
-			ctx.arc(jointPoint.depthX * 512, jointPoint.depthY * 424, HANDSIZE, 0, Math.PI * 2, true);
+			ctx.arc(jointPoint.depthX * windowWidth, jointPoint.depthY * windowHeight, HANDSIZE, 0, Math.PI * 2, true);
 			ctx.fill();
 			ctx.closePath();
 			ctx.globalAlpha = 1;
@@ -62,7 +77,7 @@
 					for(var jointType in body.joints) {
 						var joint = body.joints[jointType];
 						ctx.fillStyle = colors[index];
-						ctx.fillRect(joint.depthX * 512, joint.depthY * 424, 10, 10);
+						ctx.fillRect(joint.depthX * windowWidth, joint.depthY * windowHeight, 10, 10);
 					}
 					//draw hand states
 					updateHandState(body.leftHandState, body.joints[7]);

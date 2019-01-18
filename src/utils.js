@@ -1,4 +1,3 @@
-
 // slows down output
 let debugCounter = 0;
 export const debugBreak = () => {
