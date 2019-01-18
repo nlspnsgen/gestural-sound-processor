@@ -1,5 +1,6 @@
+import sendOSCMessage from './oscConnector';
 import { DEBUG, BALL_SIZE } from './constants';
-import { debugBreak, round } from './utils';
+import { debugBreak, round, numericMap } from './utils';
 
 // returns the currently tracked body or false
 const trackedBody = (bodyFrame) => {
@@ -17,15 +18,32 @@ const gestureListener = (bodyFrame) => {
   if (DEBUG && debugBreak()) return; // slows down console output
   const user = trackedBody(bodyFrame);
 
-  if (user) {
+  if (user !== false) {
     const leftHandX = round(user.joints[7].depthX);
     const leftHandY = round(user.joints[7].depthY);
     const rightHandX = round(user.joints[11].depthX);
     const rightHandY = round(user.joints[11].depthY);
-    const handDistanceX = round(rightHandX - leftHandX); // 0 - 0.8
-    const handDistanceY = round(rightHandY - leftHandY); // -0.6 < handDistanceY < 0.6
-    console.log('Xdistance: ', handDistanceX);
-    // if (handDistanceX <= BALL_SIZE) console.log('ball');
+    const handDistanceX = round(rightHandX - leftHandX); // goes from 0 to 0.8
+    const handDistanceXWithBall = handDistanceX > BALL_SIZE ? handDistanceX : 0;
+    const handDistanceY = round(rightHandY - leftHandY); // goes from about -0.8 to 0.8
+
+    // right or left hand could be on top.
+    // also, values smaller than ball size should be the new 0.
+    let handDistanceNegativeY = 0;
+    let handDistancePositiveY = 0;
+    if (handDistanceY > 0) {
+      handDistancePositiveY = handDistanceY > BALL_SIZE ? handDistanceY : 0;
+    } else {
+      handDistanceNegativeY = -handDistanceY > BALL_SIZE ? -handDistanceY : 0;
+    }
+
+    sendOSCMessage('/xDistance', numericMap(handDistanceX, BALL_SIZE, 0.8, 0, 127));
+    sendOSCMessage('/yDistancePositive', numericMap(handDistancePositiveY, BALL_SIZE, 0.8, 0, 127));
+    sendOSCMessage('/yDistanceNegative', numericMap(handDistanceNegativeY, BALL_SIZE, 0.8, 0, 127));
+
+
+    // console.log('/yDistancePositive', numericMap(handDistancePositiveY, BALL_SIZE, 0.6, 0, 127));
+    // console.log('/yDistanceNegative', numericMap(handDistanceNegativeY, BALL_SIZE, 0.6, 0, 127));
   }
 };
 
