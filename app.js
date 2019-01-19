@@ -25,10 +25,4 @@ if (kinect.open()) {
 
 
   kinect.openBodyReader();
-
-  // close the kinect after 5 seconds
-  setTimeout(() => {
-    kinect.close();
-    console.log('Kinect Closed');
-  }, 60000);
 }

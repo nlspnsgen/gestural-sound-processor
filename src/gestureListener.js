@@ -15,7 +15,7 @@ const trackedBody = (bodyFrame) => {
 };
 
 const gestureListener = (bodyFrame) => {
-  if (DEBUG && debugBreak()) return; // slows down console output
+  if (DEBUG && debugBreak()) return; // slows down processing
   const user = trackedBody(bodyFrame);
 
   if (user !== false) {
@@ -23,9 +23,15 @@ const gestureListener = (bodyFrame) => {
     const leftHandY = round(user.joints[7].depthY);
     const rightHandX = round(user.joints[11].depthX);
     const rightHandY = round(user.joints[11].depthY);
+    const spineBaseY = round(user.joints[0].depthX);
     const handDistanceX = round(rightHandX - leftHandX); // goes from 0 to 0.8
     const handDistanceXWithBall = handDistanceX > BALL_SIZE ? handDistanceX : 0;
     const handDistanceY = round(rightHandY - leftHandY); // goes from about -0.8 to 0.8
+    const rightHandUp = (spineBaseY - rightHandY) > BALL_SIZE - 0.02 ? spineBaseY - rightHandY : 0;
+    const leftHandDown = (leftHandY - spineBaseY) > BALL_SIZE - 0.02 ? (leftHandY - spineBaseY) : 0;
+    console.log('rightHandUp: ', rightHandUp);
+    console.log('leftHandDown: ', leftHandDown);
+
 
     // right or left hand could be on top.
     // also, values smaller than ball size should be the new 0.
@@ -37,9 +43,9 @@ const gestureListener = (bodyFrame) => {
       handDistanceNegativeY = -handDistanceY > BALL_SIZE ? -handDistanceY : 0;
     }
 
-    sendOSCMessage('/xDistance', numericMap(handDistanceX, BALL_SIZE, 0.8, 0, 127));
-    sendOSCMessage('/yDistancePositive', numericMap(handDistancePositiveY, BALL_SIZE, 0.8, 0, 127));
-    sendOSCMessage('/yDistanceNegative', numericMap(handDistanceNegativeY, BALL_SIZE, 0.8, 0, 127));
+    sendOSCMessage('/octaveUp', numericMap(rightHandUp, BALL_SIZE, 0.4, 0, 1));
+    sendOSCMessage('/octaveDown', numericMap(leftHandDown, BALL_SIZE, 0.4, 0, 1));
+    // sendOSCMessage('/yDistanceNegative', numericMap(handDistanceNegativeY, BALL_SIZE, 0.4, 0, 1));
 
 
     // console.log('/yDistancePositive', numericMap(handDistancePositiveY, BALL_SIZE, 0.6, 0, 127));
