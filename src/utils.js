@@ -2,7 +2,7 @@
 let debugCounter = 0;
 export const debugBreak = () => {
   debugCounter += 1;
-  if (debugCounter >= 15) {
+  if (debugCounter >= 20) {
     debugCounter = 0;
     return false;
   }
