@@ -29,8 +29,8 @@ const gestureListener = (bodyFrame) => {
     const handDistanceY = round(rightHandY - leftHandY); // goes from about -0.8 to 0.8
     const rightHandUp = (spineBaseY - rightHandY) > BALL_SIZE - 0.02 ? spineBaseY - rightHandY : 0;
     const leftHandDown = (leftHandY - spineBaseY) > BALL_SIZE - 0.02 ? (leftHandY - spineBaseY) : 0;
-    console.log('rightHandUp: ', rightHandUp);
-    console.log('leftHandDown: ', leftHandDown);
+    // console.log('rightHandUp: ', rightHandUp);
+    // console.log('leftHandDown: ', leftHandDown);
 
 
     // right or left hand could be on top.
@@ -43,9 +43,9 @@ const gestureListener = (bodyFrame) => {
       handDistanceNegativeY = -handDistanceY > BALL_SIZE ? -handDistanceY : 0;
     }
 
-    sendOSCMessage('/octaveUp', numericMap(rightHandUp, BALL_SIZE, 0.4, 0, 1));
-    sendOSCMessage('/octaveDown', numericMap(leftHandDown, BALL_SIZE, 0.4, 0, 1));
-    // sendOSCMessage('/yDistanceNegative', numericMap(handDistanceNegativeY, BALL_SIZE, 0.4, 0, 1));
+    sendOSCMessage('/octaveUp', numericMap(rightHandUp, BALL_SIZE, 0.35, 0, 1));
+    sendOSCMessage('/octaveDown', numericMap(leftHandDown, BALL_SIZE, 0.5, 0, 1));
+    sendOSCMessage('/dubDelay', numericMap(handDistanceX, BALL_SIZE, 0.6, 0, 1));
 
 
     // console.log('/yDistancePositive', numericMap(handDistancePositiveY, BALL_SIZE, 0.6, 0, 127));
