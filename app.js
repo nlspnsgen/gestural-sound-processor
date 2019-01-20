@@ -1,21 +1,32 @@
 /*
-Our server starts in the following order:
+server lifecycle:
 1. open websocket server
 2. start processing
-3. listen for kinect data
+3. connect to processing
+4. listen for kinect data
 */
-
 import Kinect2 from 'kinect2';
 import WebSocket from 'ws';
+import { exec } from 'child_process';
 import gestureListener from './src/gestureListener';
 
 const kinect = new Kinect2();
-const wss = new WebSocket.Server({ port: 8080 }, () => {
-  console.log('wss server open');
+let userInformed = false;
+
+const wss = new WebSocket.Server({ port: 8080, path: '/kinect' }, () => {
+  console.log('websocket server open');
+  // start processing. You need to set your own processing env variable and change this path to your own.
+  exec('%processing% --sketch="C:/Users/Poensgen/Desktop/gestural-sound-processor/src/gui" --output="C:/Users/Poensgen/Desktop/gestural-sound-processor/src/gui/output" --force --run',
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+    });
 });
 
-
-let userInformed = false;
 
 // returns the currently tracked body or false
 const trackedBody = (bodyFrame) => {
@@ -29,15 +40,14 @@ const trackedBody = (bodyFrame) => {
   return false;
 };
 
-// waits for a connection to the gui before doing anything else.
 wss.on('connection', (ws) => {
-  console.log('ws connected');
+  console.log('websocket connected to processing');
   if (kinect.open()) {
     kinect.on('bodyFrame', (bodyFrame) => {
       const body = trackedBody(bodyFrame);
       if (body !== false) {
         if (!userInformed) {
-          console.log('we are getting data from your body!');
+          console.log('kinect body detected');
           userInformed = true;
         }
         gestureListener(body);

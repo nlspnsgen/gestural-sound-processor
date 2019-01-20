@@ -22,6 +22,7 @@ const ball = (body) => {
   // console.log('rightHandY: ', rightHandY);
   // right or left hand could be on top.
   if (handDistanceY > 0) {
+    // ws.send('negative');
     // console.log('NEGATIVE');
     lowerHand = getInverseHandYPosition(spineBaseY, leftHandY);
     upperHand = getHandYPosition(rightHandY, spineBaseY);
@@ -31,9 +32,6 @@ const ball = (body) => {
     // console.log('lowerHand right: ', lowerHand);
     // console.log('upperHand left: ', upperHand);
   }
-
-
-  console.log('----');
 //   sendOSCMessage('/octaveUp', numericMap(upperHand, BALL_SIZE, 0.35, 0, 1));
 //   sendOSCMessage('/octaveDown', numericMap(lowerHand, BALL_SIZE, 0.35, 0, 1));
 //   sendOSCMessage('/dubDelay', numericMap(handDistanceXWithBall, BALL_SIZE, 0.6, 0, 1));
