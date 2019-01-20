@@ -1,37 +1,64 @@
 import websockets.*;
 
-WebsocketClient wsc;
-int now;
-boolean newEllipse;
+WebsocketClient wsClient;
+int leftHandState;
+int rightHandState;
+float leftHandX;
+float leftHandY;
+float rightHandX;
+float rightHandY;
+
+int windowWidth = 800;
+int windowHeight = 800;
+JSONArray joints;
 
 void setup(){
-  size(200,200);
-  
-  newEllipse=false;
-  
-  //Here I initiate the websocket connection by connecting to "ws://localhost:8025/john", which is the uri of the server.
-  //this refers to the Processing sketch it self (you should always write "this").
-  wsc= new WebsocketClient(this, "ws://localhost:8080/");
-  now=millis();
+  fullScreen();
+  background(0);
+  fill(204, 102, 0);
+  wsClient= new WebsocketClient(this, "ws://localhost:8080/");
 }
 
 void draw(){
-    //Here I draw a new ellipse if newEllipse is true
-  if(newEllipse){
-    ellipse(random(width),random(height),10,10);
-    newEllipse=false;
-  }
-    
-    //Every 5 seconds I send a message to the server through the sendMessage method
-  if(millis()>now+5000){
-    println("message send");
-    wsc.sendMessage("Client message");
-    now=millis();
+  if(joints != null){
+  background(0);
+  for (int i = 0; i < joints.size(); i++) {
+    //draw skeleton
+    try {
+      float jointX = joints.getJSONObject(i).getFloat("depthX");
+      float jointY = joints.getJSONObject(i).getFloat("depthY");
+      if(i == 7) {
+        leftHandX = jointX;
+        leftHandY = jointY;
+      }
+      if (i == 11) {
+        rightHandX = jointX;
+        rightHandY = jointY;
+      }
+      fill(204, 102, 0);
+      rect(jointX*width, jointY*height,10, 10);
+    } catch (RuntimeException e) {
+      e.printStackTrace();
+    }
+  }}
+    //draw ball
+    stroke(255);
+    fill(255);
+    strokeWeight(5);
+    line(leftHandX*width, leftHandY*height, rightHandX*width, rightHandY*height);
+}
+
+void webSocketEvent(String data){
+  JSONObject json = parseJSONObject(data);
+  if (json == null) {
+    println("JSONObject could not be parsed");
+  } else {
+    this.setBodyData(json);
   }
 }
 
-//This is an event like onMouseClicked. If you chose to use it, it will be executed whenever the server sends a message 
-void webSocketEvent(String msg){
- println(msg);
- newEllipse=true;
+void setBodyData(JSONObject body){
+  this.leftHandState = body.getInt("leftHandState");
+  this.rightHandState = body.getInt("rightHandState");
+  joints = body.getJSONArray("joints");
 }
