@@ -18,18 +18,18 @@ const ball = (body) => {
   let lowerHand = getHandYPosition(spineBaseY, rightHandY);
   let upperHand = getHandYPosition(leftHandY, spineBaseY);
 
-  console.log('leftHandY: ', leftHandY);
-  console.log('rightHandY: ', rightHandY);
+  // console.log('leftHandY: ', leftHandY);
+  // console.log('rightHandY: ', rightHandY);
   // right or left hand could be on top.
   if (handDistanceY > 0) {
-    console.log('NEGATIVE');
+    // console.log('NEGATIVE');
     lowerHand = getInverseHandYPosition(spineBaseY, leftHandY);
     upperHand = getHandYPosition(rightHandY, spineBaseY);
-    console.log('lowerHand left: ', lowerHand);
-    console.log('upperHand right: ', upperHand);
+    // console.log('lowerHand left: ', lowerHand);
+    // console.log('upperHand right: ', upperHand);
   } else {
-    console.log('lowerHand right: ', lowerHand);
-    console.log('upperHand left: ', upperHand);
+    // console.log('lowerHand right: ', lowerHand);
+    // console.log('upperHand left: ', upperHand);
   }
 
 

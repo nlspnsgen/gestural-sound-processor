@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "npx babel-node app.js",
+        "start": "npm run babel | npm run processing",
+        "babel": "npx babel-node app.js",
         "processing": "%processing% --sketch=\"C:/Users/Poensgen/Desktop/gestural-sound-processor/src/gui\" --output=\"C:/Users/Poensgen/Desktop/gestural-sound-processor/src/gui/output\" --force --run"
     },
     "author": "Wouter Verweirder ",
@@ -15,7 +16,8 @@
         "kinect2": "^0.1.6",
         "osc-js": "^2.0.2",
         "socket.io": "^2.2.0",
-        "websocket": "^1.0.28"
+        "websocket": "^1.0.28",
+        "ws": "^6.1.2"
     },
     "devDependencies": {
         "@babel/core": "^7.2.2",

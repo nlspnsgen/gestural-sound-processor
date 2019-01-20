@@ -7,11 +7,11 @@ boolean newEllipse;
 void setup(){
   size(200,200);
   
-  newEllipse=true;
+  newEllipse=false;
   
   //Here I initiate the websocket connection by connecting to "ws://localhost:8025/john", which is the uri of the server.
   //this refers to the Processing sketch it self (you should always write "this").
-  wsc= new WebsocketClient(this, "ws://localhost:8000");
+  wsc= new WebsocketClient(this, "ws://localhost:8080/");
   now=millis();
 }
 
@@ -24,6 +24,7 @@ void draw(){
     
     //Every 5 seconds I send a message to the server through the sendMessage method
   if(millis()>now+5000){
+    println("message send");
     wsc.sendMessage("Client message");
     now=millis();
   }
