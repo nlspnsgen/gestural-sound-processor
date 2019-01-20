@@ -1,6 +1,6 @@
-import sendOSCMessage from './oscConnector';
-import { round, numericMap } from './utils';
-import { BALL_SIZE } from './constants';
+import sendOSCMessage from '../oscConnector';
+import { round, numericMap } from '../utils';
+import { BALL_SIZE } from '../constants';
 
 // Values smaller than ball size should be the new 0.
 const getHandYPosition = (maxY, yPos) => ((maxY - yPos) > BALL_SIZE ? round(maxY - yPos) : 0);
@@ -32,9 +32,9 @@ const ball = (body) => {
     // console.log('lowerHand right: ', lowerHand);
     // console.log('upperHand left: ', upperHand);
   }
-//   sendOSCMessage('/octaveUp', numericMap(upperHand, BALL_SIZE, 0.35, 0, 1));
-//   sendOSCMessage('/octaveDown', numericMap(lowerHand, BALL_SIZE, 0.35, 0, 1));
-//   sendOSCMessage('/dubDelay', numericMap(handDistanceXWithBall, BALL_SIZE, 0.6, 0, 1));
+  //   sendOSCMessage('/octaveUp', numericMap(upperHand, BALL_SIZE, 0.35, 0, 1));
+  //   sendOSCMessage('/octaveDown', numericMap(lowerHand, BALL_SIZE, 0.35, 0, 1));
+  sendOSCMessage('/dubDelay', numericMap(handDistanceXWithBall, BALL_SIZE, 0.6, 0, 1));
 };
 
 export default ball;

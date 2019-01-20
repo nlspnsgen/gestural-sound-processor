@@ -1,5 +1,5 @@
-import sendOSCMessage from './oscConnector';
-import { round, numericMap } from './utils';
+import sendOSCMessage from '../oscConnector';
+import { round, numericMap } from '../utils';
 
 const functionalGestures = (body) => {
   const leftHandX = round(body.joints[7].depthX);

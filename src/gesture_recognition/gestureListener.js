@@ -1,5 +1,5 @@
-import { DEBUG } from './constants';
-import { debugBreak } from './utils';
+import { DEBUG } from '../constants';
+import { debugBreak } from '../utils';
 import ball from './gesturesBall';
 
 const gestureListener = (body) => {

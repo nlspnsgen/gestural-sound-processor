@@ -8,7 +8,7 @@ server lifecycle:
 import Kinect2 from 'kinect2';
 import WebSocket from 'ws';
 import { exec } from 'child_process';
-import gestureListener from './src/gestureListener';
+import gestureListener from './src/gesture_recognition/gestureListener';
 
 const kinect = new Kinect2();
 let userInformed = false;

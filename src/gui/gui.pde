@@ -2,8 +2,6 @@ import websockets.*;
 import java.util.Collections;
 import java.util.Arrays;
 
-
-
 WebsocketClient wsClient;
 int leftHandState;
 int rightHandState;
@@ -65,8 +63,6 @@ void webSocketEvent(String data){
   JSONObject json = parseJSONObject(data);
   if (json == null) {
     println("JSONObject could not be parsed");
-    //this seems to be the only way to differentiate between messages
-    // println(data);
   } else {
     this.setBodyData(json);
   }
