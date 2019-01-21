@@ -1,12 +1,13 @@
-/*
-server lifecycle:
+/* server lifecycle:
 1. open websocket server
 2. start processing
 3. connect to processing
 4. listen for kinect data
+5. close kinect on exit
 */
 import Kinect2 from 'kinect2';
 import WebSocket from 'ws';
+import exitHook from 'exit-hook';
 import { fork } from 'child_process';
 import gestureListener from './src/gesture_recognition/gestureListener';
 import * as config from './config';
@@ -29,7 +30,7 @@ const trackedBody = (bodyFrame) => {
       bodyTrackedIndex = body.bodyIndex;
     }
   });
-  if (bodyTrackedIndex) return bodyFrame.bodies[bodyTrackedIndex];
+  if (bodyTrackedIndex !== undefined) return bodyFrame.bodies[bodyTrackedIndex];
   return false;
 };
 
@@ -49,4 +50,9 @@ wss.on('connection', (ws) => {
     });
     kinect.openBodyReader();
   }
+});
+
+exitHook(() => {
+  console.log('exiting...');
+  kinect.close();
 });

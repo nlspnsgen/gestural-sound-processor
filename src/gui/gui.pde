@@ -20,14 +20,13 @@ void setup(){
   fullScreen();
   background(0);
   fill(204, 102, 0);
-  config = loadJSONObject("../../config.json");
+  config = loadJSONObject("../../../config.json");
   wsClient= new WebsocketClient(this, "ws://localhost:" +  config.getInt("webSocketPort") + "/kinect");
   gestureSet = config.getString("gestureSet");
 }
 
 void draw(){
   if(joints != null){
-    background(0);
     if(gestureSet.equals("ball")){
       this.renderBall();
     } else {
@@ -44,14 +43,13 @@ void renderBall() {
     centerX = (rightHandX*width + leftHandX*width)/2;
     centerY = (rightHandY*height + leftHandY*height)/2;
     radius = this.getRadius(rightHandX, rightHandY, leftHandX, leftHandY);
-    stroke(255);
+    background(radius/10);
     fill(255);
-    strokeWeight(5);
-    ellipse(centerX, centerY, radius, radius);
-    line(leftHandX*width, leftHandY*height, rightHandX*width, rightHandY*height);
+    ellipse(width/2, height/2, radius, radius);
 }
 
 void renderSkeleton() {
+  background(0);
   for (int i = 0; i < joints.size(); i++) {
     try {
       float jointX = joints.getJSONObject(i).getFloat("depthX");
@@ -87,5 +85,6 @@ float getRadius(float rightHandX, float rightHandY, float leftHandX, float leftH
     float radius3 = rightHandY*width - leftHandY*width;
     float radius4 = leftHandY*width - rightHandY*width;
     float largest = Collections.max(Arrays.asList(radius1, radius2, radius3, radius4));
-    return largest;
+    if (largest < 200) largest = 200;
+    return largest*1.5;
 }

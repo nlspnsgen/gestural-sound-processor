@@ -11,6 +11,7 @@
     "author": "Niels Poensgen",
     "license": "MIT",
     "dependencies": {
+        "exit-hook": "^2.0.0",
         "kinect2": "^0.1.6",
         "osc-js": "^2.0.2",
         "ws": "^6.1.2"
