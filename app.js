@@ -7,26 +7,17 @@ server lifecycle:
 */
 import Kinect2 from 'kinect2';
 import WebSocket from 'ws';
-import { exec, fork } from 'child_process';
+import { fork } from 'child_process';
 import gestureListener from './src/gesture_recognition/gestureListener';
-import { webSocketPort } from './src/constants';
+import * as config from './config';
 
 const kinect = new Kinect2();
 let userInformed = false;
 
-const wss = new WebSocket.Server({ port: webSocketPort, path: '/kinect' }, () => {
+const wss = new WebSocket.Server({ port: config.webSocketPort, path: '/kinect' }, () => {
   console.log('websocket server open');
-  // start processing. You need to set your own processing env variable and change this path to your own.
+  // start processing on a new thread
   fork('./src/processingStart.js');
-  // exec('%processing% --sketch="C:/Users/Poensgen/Desktop/gestural-sound-processor/src/gui" --output="C:/Users/Poensgen/Desktop/gestural-sound-processor/src/gui/output" --force --run',
-  //   (error, stdout, stderr) => {
-  //     if (error) {
-  //       console.error(`exec error: ${error}`);
-  //       return;
-  //     }
-  //     console.log(`stdout: ${stdout}`);
-  //     console.log(`stderr: ${stderr}`);
-  //   });
 });
 
 

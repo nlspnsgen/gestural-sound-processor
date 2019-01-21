@@ -32,51 +32,28 @@ float rightHandY;
 float centerX;
 float centerY;
 float radius;
-
-int windowWidth = 800;
-int windowHeight = 800;
+String gestureSet;
+JSONObject config;
 JSONArray joints;
 
 public void setup(){
   
   background(0);
   fill(204, 102, 0);
-  wsClient= new WebsocketClient(this, "ws://localhost:8080/kinect");
+  config = loadJSONObject("../../config.json");
+  wsClient= new WebsocketClient(this, "ws://localhost:" +  config.getInt("webSocketPort") + "/kinect");
+  gestureSet = config.getString("gestureSet");
 }
 
 public void draw(){
   if(joints != null){
-  background(0);
-  for (int i = 0; i < joints.size(); i++) {
-    //draw skeleton
-    try {
-      float jointX = joints.getJSONObject(i).getFloat("depthX");
-      float jointY = joints.getJSONObject(i).getFloat("depthY");
-      if(i == 7) {
-        leftHandX = jointX;
-        leftHandY = jointY;
-      }
-      if (i == 11) {
-        rightHandX = jointX;
-        rightHandY = jointY;
-      }
-      fill(204, 102, 0);
-      ellipseMode(CENTER);
-      ellipse(jointX*width, jointY*height,10, 10);
-    } catch (RuntimeException e) {
-      e.printStackTrace();
+    background(0);
+    if(gestureSet.equals("ball")){
+      this.renderBall();
+    } else {
+      this.renderSkeleton();
     }
-  }}
-    //draw ball
-    stroke(255);
-    fill(255);
-    strokeWeight(5);
-    centerX = (rightHandX*width + leftHandX*width)/2;
-    centerY = (rightHandY*height + leftHandY*height)/2;
-    radius = this.getRadius(rightHandX, rightHandY, leftHandX, leftHandY);
-
-    ellipse(centerX, centerY, radius, radius);
-    line(leftHandX*width, leftHandY*height, rightHandX*width, rightHandY*height);
+  }
 }
 
 public void webSocketEvent(String data){
@@ -101,6 +78,36 @@ public float getRadius(float rightHandX, float rightHandY, float leftHandX, floa
     float radius4 = leftHandY*width - rightHandY*width;
     float largest = Collections.max(Arrays.asList(radius1, radius2, radius3, radius4));
     return largest;
+}
+
+public void renderBall() {
+    leftHandX = joints.getJSONObject(7).getFloat("depthX");
+    leftHandY = joints.getJSONObject(7).getFloat("depthY");
+    rightHandX = joints.getJSONObject(11).getFloat("depthX");
+    rightHandY = joints.getJSONObject(11).getFloat("depthY");
+    centerX = (rightHandX*width + leftHandX*width)/2;
+    centerY = (rightHandY*height + leftHandY*height)/2;
+    radius = this.getRadius(rightHandX, rightHandY, leftHandX, leftHandY);
+    stroke(255);
+    fill(255);
+    strokeWeight(5);
+    ellipse(centerX, centerY, radius, radius);
+    line(leftHandX*width, leftHandY*height, rightHandX*width, rightHandY*height);
+}
+
+public void renderSkeleton() {
+  for (int i = 0; i < joints.size(); i++) {
+    //draw skeleton
+    try {
+      float jointX = joints.getJSONObject(i).getFloat("depthX");
+      float jointY = joints.getJSONObject(i).getFloat("depthY");
+      fill(204, 102, 0);
+      ellipseMode(CENTER);
+      ellipse(jointX*width, jointY*height,10, 10);
+    } catch (RuntimeException e) {
+      e.printStackTrace();
+    }
+  }
 }
   public void settings() {  fullScreen(); }
   static public void main(String[] passedArgs) {

@@ -1,9 +1,10 @@
 import OSC from 'osc-js';
-import { oscHost, oscPort } from './constants';
+import * as config from '../config';
+
 
 let isOpen = false;
 const osc = new OSC({
-  plugin: new OSC.DatagramPlugin({ send: { port: oscHost, host: oscPort } }),
+  plugin: new OSC.DatagramPlugin({ send: { port: config.oscHost, host: config.oscPort } }),
 });
 
 osc.open();
