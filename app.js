@@ -3,7 +3,7 @@
 2. start processing
 3. connect to processing
 4. listen for kinect data
-5. close kinect on exit
+5. close kinect and websockets on exit
 */
 import Kinect2 from 'kinect2';
 import WebSocket from 'ws';
