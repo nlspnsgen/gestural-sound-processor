@@ -34,10 +34,15 @@ float rightHandX;
 float rightHandY;
 float rightHandZ;
 float spineMidZ; 
-float centerX;
+float neckY;
+float spineBaseY;
 float centerY;
-float oldRadius;
+float relativeCenterY;
 float radius;
+float relativeZ;
+float relativeZColor;
+
+
 String gestureSet;
 JSONObject config;
 JSONArray joints;
@@ -67,27 +72,25 @@ public void renderBall() {
   leftHandX = joints.getJSONObject(7).getFloat("depthX");
   leftHandY = joints.getJSONObject(7).getFloat("depthY");
   leftHandZ = joints.getJSONObject(7).getFloat("cameraZ");
-  
-  spineMidZ = joints.getJSONObject(1).getFloat("cameraZ");
-
   rightHandX = joints.getJSONObject(11).getFloat("depthX");
   rightHandY = joints.getJSONObject(11).getFloat("depthY");
   rightHandZ = joints.getJSONObject(11).getFloat("cameraZ");
+  spineBaseY = joints.getJSONObject(0).getFloat("depthY");
+  neckY = joints.getJSONObject(2).getFloat("depthY");
+  spineMidZ = joints.getJSONObject(1).getFloat("cameraZ");
 
-  float relativeZ = spineMidZ-leftHandZ;
-  println("leftHandZ: "+relativeZ);
+  //Get the average hand Z position and its distance to the spineBase
+  relativeZ = spineMidZ-((leftHandZ+rightHandZ) / 2);
+  relativeZColor = this.numericMap(relativeZ, 0.2f, 0.6f, 0.0f, 255);
 
-
-
-  float translatedLeftZ = this.numericMap(leftHandZ, 1.0f, 2.0f, 0.0f, 255);
-  centerX = (rightHandX*width + leftHandX*width)/2;
-  centerY = (rightHandY*height-200 + leftHandY*height-200)/2;
-  
+  //Get the average hand Y position between the spineBase and Neck. Remember Y values are inverted on Kinect.
+  centerY = (rightHandY + leftHandY)/2;
+  relativeCenterY = this.numericMap(centerY, neckY, spineBaseY, 0, height);
   
   radius = this.calculateRadius(rightHandX, rightHandY, leftHandX, leftHandY);
   background(radius/10);
-  fill(translatedLeftZ);
-  ellipse(width/2, centerY, radius, radius);
+  fill(relativeZColor);
+  ellipse(width/2, relativeCenterY, radius, radius);
 }
 
 public void renderSkeleton() {
@@ -116,7 +119,7 @@ public void webSocketEvent(String data){
 
 public void setBodyData(JSONObject body){
   this.leftHandState = body.getInt("leftHandState");
-  this.rightHandState = body.getInt("rightHandState");
+this.rightHandState = body.getInt("rightHandState");
   joints = body.getJSONArray("joints");
 }
 
