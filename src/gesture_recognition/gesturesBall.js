@@ -21,9 +21,13 @@ import * as config from '../../config';
 
 const ball = (body) => {
   const leftHandX = round(body.joints[7].depthX);
-  const leftHandY = round(1 - body.joints[7].depthY); // the coordinate system is inverted.
   const rightHandX = round(body.joints[11].depthX);
+  const leftHandY = round(1 - body.joints[7].depthY); // the coordinate system is inverted.
   const rightHandY = round(1 - body.joints[11].depthY);
+  const leftHandZ = round(1 - body.joints[7].depthZ); // the coordinate system is inverted.
+  const rightHandZ = round(1 - body.joints[11].depthZ);
+
+
   const handDistanceX = round(rightHandX - leftHandX);
   const handDistanceXWithBall = handDistanceX > config.ballSize ? handDistanceX : 0;
   const spineMid = round(1 - body.joints[1].depthY);
@@ -34,7 +38,7 @@ const ball = (body) => {
   const upperHandToCenterYPoint = upperHand - spineMid;
   const lowerHandToCenterYPoint = spineMid - lowerHand;
 
-  sendOSCMessage('/octaveUp', numericMap(upperHandToCenterYPoint, config.ballSize, 0.2, 0, 1));
+  sendOSCMessage('/octaveUp', numericMap(upperHand, config.ballSize, 0.2, 0, 1));
   sendOSCMessage('/octaveDown', numericMap(lowerHandToCenterYPoint, config.ballSize, 0.2, 0, 1));
   sendOSCMessage('/dubDelay', numericMap(handDistanceXWithBall, config.ballSize, 0.4, 0, 1));
 };
