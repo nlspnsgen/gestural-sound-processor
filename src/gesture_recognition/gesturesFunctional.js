@@ -6,9 +6,13 @@ const functionalGestures = (body) => {
   const leftHandY = round(1 - body.joints[7].depthY);
   const rightHandX = round(body.joints[11].depthX);
   const rightHandY = round(1 - body.joints[11].depthY);
-  const spineBaseY = round(1 - body.joints[0].depthX);
+  const spineBaseY = round(1 - body.joints[0].depthY);
   const spineShoulderY = round(1 - body.joints[20].depthY);
   const handDistanceX = round(rightHandX - leftHandX);
+
+  // console.log('rightHandY: ', rightHandY);
+  // console.log('spineBaseY: ', spineBaseY);
+  // console.log('spineShoulderY: ', spineShoulderY);
 
   sendOSCMessage('/dubDelay', numericMap(handDistanceX, 0, 0.6, 0, 1));
 
