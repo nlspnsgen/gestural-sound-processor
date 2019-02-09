@@ -4,5 +4,5 @@
  "oscPort" : "127.0.0.1",
  "oscHost" : 10001,
  "webSocketPort" : 8080,
- "gestureSet" : "functional"
+ "gestureSet" : "ball"
 }
