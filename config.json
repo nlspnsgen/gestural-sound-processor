@@ -1,8 +1,8 @@
 {
- "ballSize" : 0.05,
+ "ballSize" : 0.08,
  "debug" : false,
  "oscPort" : "127.0.0.1",
  "oscHost" : 10001,
  "webSocketPort" : 8080,
- "gestureSet" : "functional"
+ "gestureSet" : "ball"
 }

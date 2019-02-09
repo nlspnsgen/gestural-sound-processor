@@ -9,7 +9,6 @@ const functionalGestures = (body) => {
   const spineBaseY = round(1 - body.joints[0].depthX);
   const spineShoulderY = round(1 - body.joints[20].depthY);
   const handDistanceX = round(rightHandX - leftHandX);
-  const { rightHandState, leftHandState } = body;
 
   sendOSCMessage('/dubDelay', numericMap(handDistanceX, 0, 0.6, 0, 1));
 
