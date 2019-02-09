@@ -25,20 +25,21 @@ const ball = (body) => {
   const leftHandY = round(1 - body.joints[7].depthY); // the coordinate system is inverted.
   const rightHandY = round(1 - body.joints[11].depthY);
 
-  const spineMidZ = round(body.joints[1].cameraZ);
   const leftHandZ = round(body.joints[7].cameraZ);
   const rightHandZ = round(body.joints[11].cameraZ);
+  const spineBaseY = round(1 - body.joints[0].depthY);
+  const spineMidZ = round(body.joints[1].cameraZ);
 
-  const averageDistanceToSpine = spineMidZ - (leftHandZ + rightHandZ) / 2;
+  const averageDistanceToSpineZ = spineMidZ - (leftHandZ + rightHandZ) / 2;
 
 
   const handDistanceX = round(rightHandX - leftHandX);
   const handDistanceXWithBall = handDistanceX > config.ballSize ? handDistanceX : 0;
   const upperHand = Math.max(leftHandY, rightHandY);
+  const upperHandDistanceToSpineY = upperHand - spineBaseY;
 
-
-  sendOSCMessage('/octaveUp', numericMap(upperHand, config.ballSize, 0.2, 0, 1));
-  sendOSCMessage('/octaveDown', numericMap(averageDistanceToSpine, config.ballSize, 0.6, 0, 1));
+  sendOSCMessage('/octaveUp', numericMap(upperHandDistanceToSpineY, config.ballSize, 0.4, 0, 1));
+  sendOSCMessage('/octaveDown', numericMap(averageDistanceToSpineZ, config.ballSize, 0.5, 0, 1));
   sendOSCMessage('/dubDelay', numericMap(handDistanceXWithBall, config.ballSize, 0.4, 0, 1));
 };
 

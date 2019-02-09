@@ -64,8 +64,8 @@ void renderBall() {
   //Get the average hand Y position between the spineBase and Neck. Remember Y values are inverted on Kinect.
   centerY = (rightHandY + leftHandY)/2;
   relativeCenterY = this.numericMap(centerY, neckY, spineBaseY, 0, height);
-    
-  background(this.getBiggestRadius()/10);
+  radius = this.getBiggestRadius();
+  background(radius/10);
   fill(relativeZColor);
   ellipse(width/2, relativeCenterY, radius, radius);
 }

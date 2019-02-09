@@ -66,7 +66,7 @@ public void draw(){
     if(gestureSet.equals("ball")){
       this.renderBall();
     } else {
-      this.renderSkeleton();
+      this.renderFunctional();
     }
   }
 }
@@ -85,13 +85,13 @@ public void renderBall() {
   //Get the average hand Y position between the spineBase and Neck. Remember Y values are inverted on Kinect.
   centerY = (rightHandY + leftHandY)/2;
   relativeCenterY = this.numericMap(centerY, neckY, spineBaseY, 0, height);
-    
-  background(this.getBiggestRadius()/10);
+  radius = this.getBiggestRadius();
+  background(radius/10);
   fill(relativeZColor);
   ellipse(width/2, relativeCenterY, radius, radius);
 }
 
-public void renderSkeleton() {
+public void renderFunctional() {
   background(0);
   float leftHandSize = this.numericMap(1-leftHandY, 0.0f, 1.0f, 1, 600);
   float rightHandSize = this.numericMap(1-rightHandY, 0.0f, 1.0f, 1, 600);
@@ -100,9 +100,8 @@ public void renderSkeleton() {
   float rightHandColor = this.numericMap(1-rightHandY, 0.0f, 1.0f, 0, 255);
   
   float lineColor =  this.numericMap(rightHandX-leftHandX, 0.0f, 0.4f, 0, 255);
-
   float strokeSize = this.numericMap(rightHandX-leftHandX, 0.0f, 0.4f, 1, 10);
-  println("rightHandX-leftHandX: "+(rightHandX-leftHandX));
+
   stroke(240); 
   strokeWeight(strokeSize);
   stroke(lineColor);
@@ -113,20 +112,6 @@ public void renderSkeleton() {
   ellipse(leftHandX*width, leftHandY*height, leftHandSize, leftHandSize);
   fill(rightHandColor);
   ellipse(rightHandX*width, rightHandY*height, rightHandSize, rightHandSize);
-
-  // for (int i = 0; i < joints.size(); i++) {
-  //   //Every so often this function stumbles.
-  //   try {
-  //     float jointX = joints.getJSONObject(i).getFloat("depthX");
-  //     float jointY = joints.getJSONObject(i).getFloat("depthY");
-  //     fill(204, 102, 0);
-  //     ellipseMode(CENTER);
-  //     ellipse(jointX*width, jointY*height,10, 10);
-  //   } catch (RuntimeException e) {
-  //     e.printStackTrace();
-  //   }
-  // }
-
 }
 
 /* WEBSOCKET FUNCTIONS */
