@@ -25,7 +25,7 @@ const gestureListener = (body) => {
     if (last3HandStatesLeft.every(currentValue => currentValue === 3)) {
       looping = true;
       console.log('looper on!');
-      // sendOSCMessage('/looper', 1);
+      sendOSCMessage('/looper', 1);
     }
   }
 
@@ -33,10 +33,10 @@ const gestureListener = (body) => {
     if (last3HandStatesRight.every(currentValue => currentValue === 3)) {
       looping = false;
       console.log('looper off!');
-      // sendOSCMessage('/looper', 0);
-      // sendOSCMessage('/looper', 0);
     }
   }
+  // sometimes the off messages don't quite get through so we make sure they do.
+  if (looping === false) sendOSCMessage('/looper', 0);
 
 
   if (config.gestureSet === 'ball') {
