@@ -1,0 +1,2 @@
+# Gestural Sound Processor
+In order for this to work you need to have npm installed. Also you need to setup processing so it can be run via an environment variable. Run `npm install` to install all necessary packages and `npm start` to start the application.

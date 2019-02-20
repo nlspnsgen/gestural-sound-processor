@@ -37,9 +37,9 @@ const ball = (body) => {
   const handDistanceXWithBall = handDistanceX > config.ballSize ? handDistanceX : 0;
   const upperHand = Math.max(leftHandY, rightHandY);
   const upperHandDistanceToSpineY = upperHand - spineBaseY;
-  sendOSCMessage('/octaveUp', numericMap(upperHandDistanceToSpineY, config.ballSize, 0.4, 0, 1));
+  sendOSCMessage('/reverb', numericMap(upperHandDistanceToSpineY, config.ballSize, 0.4, 0, 1));
   sendOSCMessage('/octaveDown', numericMap(averageDistanceToSpineZ, config.ballSize + 0.1, 0.4, 0, 1));
-  sendOSCMessage('/dubDelay', numericMap(handDistanceXWithBall, config.ballSize, 0.4, 0, 1));
+  sendOSCMessage('/delay', numericMap(handDistanceXWithBall, config.ballSize, 0.4, 0, 1));
 };
 
 export default ball;

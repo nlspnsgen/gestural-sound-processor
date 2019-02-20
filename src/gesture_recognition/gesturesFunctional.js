@@ -12,8 +12,8 @@ const functionalGestures = (body) => {
   const handDistanceX = round(rightHandX - leftHandX);
 
 
-  sendOSCMessage('/dubDelay', numericMap(handDistanceX, 0, 0.6, 0, 1));
-  sendOSCMessage('/octaveUp', numericMap(rightHandY, spineBaseY, spineShoulderY, 0, 1));
+  sendOSCMessage('/delay', numericMap(handDistanceX, 0, 0.6, 0, 1));
+  sendOSCMessage('/reverb', numericMap(rightHandY, spineBaseY, spineShoulderY, 0, 1));
   sendOSCMessage('/octaveDown', numericMap(leftHandY, spineBaseY, spineShoulderY, 0, 1));
 };
 
